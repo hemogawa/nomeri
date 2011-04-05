@@ -56,19 +56,16 @@ int fwidth,baseWidth = 190, zoomeStep = 0;
 
 static int mouseX, mouseY;
 static int width,height;
-int VPSize = 20; 
-int bulevel = 30;
+int VPSize = 50; 
+int nomeri = 0;
 
 void drowDamy(){
 	glColor4f(0.0, 0.0, 0.0,0.5);
 	glBegin(GL_POLYGON);
-	glVertex2d(-0.9,1.0);
-	glVertex2d(-0.9, -0.5);
-	glVertex2d(-0.6, 0.0);
-	glVertex2d(-0.3, -0.6);
-	glVertex2d(-0.1, -0.6);
-	glVertex2d(-0.4, 0.0);
-	glVertex2d(0.1, 0.0);
+	glVertex3d(-0.9,0.9,-0.5);
+	glVertex3d(-0.9, -0.9,0.5);
+	glVertex3d(0.9, -0.9,0.5);
+	glVertex3d(0.9, 0.9,-0.5);
 glEnd();
 	
 }
@@ -76,15 +73,11 @@ glEnd();
 void disp(){
 	glClearColor(1, 0.5, 0.5, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glViewport(10, 10, VPSize, VPSize);
-	glViewport(mouseX+bulevel, height-mouseY-VPSize, VPSize, VPSize);
+	glRotatef(20, 1.0, 0.0, 0.0);
+	glViewport(0, 0, width, height);
 	drowDamy();
-	glViewport(mouseX-bulevel, height-mouseY-VPSize, VPSize, VPSize);
-	drowDamy();
-	glViewport(mouseX, height-mouseY+bulevel-VPSize, VPSize, VPSize);
-	drowDamy();
-	glViewport(mouseX, height-mouseY-bulevel-VPSize, VPSize, VPSize);
-	drowDamy();
+	//gluPerspective(100.0, width/height, 1.0, 200.0);
+	//glutWireCube(0.4);
 	glFlush();
 }
 
@@ -126,18 +119,14 @@ void idle(void){
 				if((fwidth-baseWidth)/20 >= zoomeStep+1){
 					zoomeStep++;
 					printf("ZoomeIn!%d:",zoomeStep);
-					//sprintf(buff, "osascript scripts/zoomeIn.scpt %d",zoomeStep);
-					//sprintf(buff, "osascript scripts/zoomeIn_top.scpt %d",zoomeStep);
 					system(buff);
 				}else if ((fwidth-baseWidth)/20 < zoomeStep) {
 					printf("ZoomeOut!%d:",zoomeStep);
 					if(zoomeStep>0)
 						zoomeStep--;
-					//sprintf(buff, "osascript scripts/zoomeOut.scpt %d",zoomeStep);
-					//sprintf(buff, "osascript scripts/zoomeOut_top.scpt %d",zoomeStep);
 					system(buff);
 				}
-				bulevel = zoomeStep*10;
+				nomeri = zoomeStep*10;
 			}
 			//fp = fopen("scripts/log.txt","a");
 			//fprintf(fp,"%d->%d\n",baseWidth,width);
